@@ -27,8 +27,7 @@ const url = 'https://www.google.com/flights';
     let cheapestDeparture = await departure.scrapeDeparturePrices(page);
 
     cheapestDeparture.forEach(element => {
-        console.log('cheapest prices: ' + element.price);    
-        console.log('cheapest date: ' + element.date);    
+        console.log(`Date: ${element.date} price: ${element.price}`)
     });
     
     debugger;

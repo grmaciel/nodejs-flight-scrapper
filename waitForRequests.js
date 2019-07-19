@@ -28,6 +28,7 @@ function waitForRequests(page) {
                         }
                     }
                 } catch (error) {
+                    resolve();
                     //fuck it
                 }
             }, 1800, startTime)
