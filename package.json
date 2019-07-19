@@ -1,0 +1,22 @@
+{
+  "name": "flight-scrapper",
+  "version": "0.0.1",
+  "description": "A Google Flight Scrapper",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "Gilson Maciel",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^1.18.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
+  },
+  "devDependencies": {
+    "pending-xhr-puppeteer": "^2.0.0"
+  }
+}
