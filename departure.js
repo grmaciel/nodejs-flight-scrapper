@@ -71,7 +71,7 @@ async function chepastePriceInVisibleMonths(page, firstMonthIndex, secondMonthIn
                      * debug purpose to verify if we are really seeing the prices for the full month
                      * can't guarantee this 100% with the current implementation
                      */
-                    // console.log('price ' + price + ' for day ' + day.getAttribute('data-day'));
+                    console.log('price ' + price + ' for day ' + day.getAttribute('data-day'));
                     debugger;
 
                     if (price < cheapestPrice) {

@@ -14,26 +14,19 @@ function waitForRequests(page) {
              */
             clearTimeout(timeout)
             timeout = setTimeout(function () {
-                try {
-                    var endTime = new Date();
-                    var timeDiff = endTime - startTime; // miliseconds
-                    // console.log('time diff ' + timeDiff)
+                var endTime = new Date();
+                var timeDiff = endTime - startTime; // miliseconds
+                // console.log('time diff ' + timeDiff)
 
-                    if (timeDiff >= 1700) {
-                        try {
-                            page.removeListener('request', listener);
-                            resolve()
-                        } catch (error) {
-                            resolve();
-                        }
-                    }
-                } catch (error) {
-                    resolve();
-                    //fuck it
+                if (timeDiff >= 1700) {
+                    page.removeListener('request', listener);
+                    resolve()
                 }
             }, 1800, startTime)
 
-            request.continue();
+            if (!request._interceptionHandled) {
+                request.continue();
+            }
         }
         page.on('request', listener);
     })

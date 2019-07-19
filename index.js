@@ -20,8 +20,7 @@ const url = 'https://www.google.com/flights';
     await page.screenshot({ path: 'screenshots/entry.png' });
     
     // Fill up destiny
-    // TODO: this might not work if the city have 2 airports i guess, not sure though
-    await destiny.fillDestiny(page, 'Navegantes')
+    await destiny.fillDestiny(page, 'São Paulo')
     
     // Check departure prices
     let cheapestDeparture = await departure.scrapeDeparturePrices(page);
