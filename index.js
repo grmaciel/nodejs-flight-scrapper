@@ -21,7 +21,7 @@ const url = 'https://www.google.com/flights';
     await page.screenshot({ path: 'screenshots/entry.png' });
     
     // Setting up passangers
-    await passengers.setupPassenger(page, 1, 0, 0, 0);
+    await passengers.setupPassenger(page, 2, 1, 0, 0);
 
     // Fill up destiny
     await destiny.fillOriginDestiny(page, 'Berlin', 'Navegantes');

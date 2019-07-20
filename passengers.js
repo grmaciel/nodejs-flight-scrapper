@@ -3,8 +3,8 @@ const passengerPlusSelector = '#flt-modaldialog > div > div > div:nth-child(1) >
 const childrenPlusSelector = '#flt-modaldialog > div > div > div:nth-child(2) > div > div:nth-child(3) > div.gws-flights-widgets-numberpicker__flipper-shadow'
 const doneSelector = '#flt-modaldialog > div > div > div.gws-flights__dialog-button-container.oMol8b > div.gws-flights__dialog-button.gws-flights__dialog-primary-button'
 
-async function setupPassenger(page, adults, children, infantsInSeat, infantsOnLap) {
-    if (adults == 1 && children == 0 && infantsInSeat == 0 && infantsOnLap == 0) return;
+async function setupPassenger(page, adults, children) {
+    if (adults == 1 && children == 0) return;
 
     console.log(`Settings passangers: adults: ${adults} children: ${children}`);
 
@@ -24,6 +24,7 @@ async function setupPassenger(page, adults, children, infantsInSeat, infantsOnLa
     await clickAndWait(page, doneSelector)
     await page.waitFor(1000);
     // TODO: add validation that the Passenger count in the label is equal the number of passengers
+    // TODO: add support to infants
 }
 
 async function clickAndWait(page, selector) {
