@@ -22,7 +22,7 @@ async function findCheapestPricesInOneYear(page) {
     // we always have 2 visible months, so we just jump to the next two
     for (i = 0; i < 12; i += 2) {
         // all the months are available here but we still need to trigger the load of the prices
-        let price = await chepastePriceInVisibleMonths(page, i, i + 1)
+        let price = await cheapestPriceInVisibleMonths(page, i, i + 1)
         cheapestPrices.push(price)
         // we need to move 2 months ahead
         await page.click(nextMonthBtnSelector)
@@ -37,7 +37,7 @@ async function findCheapestPricesInOneYear(page) {
     return cheapestPrices
 }
 
-async function chepastePriceInVisibleMonths(page, firstMonthIndex, secondMonthIndex) {
+async function cheapestPriceInVisibleMonths(page, firstMonthIndex, secondMonthIndex) {
     return await page.evaluate((firstMonthIndex, secondMonthIndex) => {
         const months = document.getElementsByClassName('gws-travel-calendar__month gws-travel-calendar__show-annotations')
         const weekSelector = 'gws-travel-calendar__week';
