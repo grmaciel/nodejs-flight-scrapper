@@ -2,6 +2,7 @@ const rp = require('request-promise');
 const puppeteer = require('puppeteer');
 const destiny = require('./destiny.js');
 const departure = require('./departure.js');
+const passengers = require('./passengers.js');
 
 const url = 'https://www.google.com/flights';
 
@@ -19,14 +20,17 @@ const url = 'https://www.google.com/flights';
     await page.goto(url);
     await page.screenshot({ path: 'screenshots/entry.png' });
     
+    // Setting up passengers
+    await passengers.setupPassengers(page, 1, 0);
+    
     // Fill up destiny
-    await destiny.fillOriginDestiny(page, 'Berlin', 'Navegantes')
+    await destiny.fillOriginDestiny(page, 'Berlin', 'Navegantes');
     
     // Check departure prices
     let cheapestDeparture = await departure.scrapeDeparturePrices(page);
 
     cheapestDeparture.forEach(element => {
-        console.log(`Date: ${element.date} price: ${element.price}`)
+        console.log(`Date: ${element.date} price: ${element.price}`);
     });
     
     debugger;

@@ -9,7 +9,6 @@ async function scrapeDeparturePrices(page) {
 
     // funky waiting for the first prices to load, could use the wait for requests now
     await page.waitFor(3000);
-    await page.screenshot({ path: 'screenshots/day-query.png' });
     debugger;
 
     return await findCheapestPricesInOneYear(page);

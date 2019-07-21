@@ -18,11 +18,11 @@ function waitForRequests(page) {
                 var timeDiff = endTime - startTime; // miliseconds
                 // console.log('time diff ' + timeDiff)
 
-                if (timeDiff >= 1700) {
+                if (timeDiff >= 1900) {
                     page.removeListener('request', listener);
                     resolve()
                 }
-            }, 1800, startTime)
+            }, 2000, startTime)
 
             if (!request._interceptionHandled) {
                 request.continue();
