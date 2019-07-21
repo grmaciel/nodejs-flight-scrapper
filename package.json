@@ -16,7 +16,5 @@
     "request": "^2.88.0",
     "request-promise": "^4.2.4"
   },
-  "devDependencies": {
-    "pending-xhr-puppeteer": "^2.0.0"
-  }
+  "devDependencies": {}
 }
