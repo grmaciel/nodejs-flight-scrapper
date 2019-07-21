@@ -1,6 +1,6 @@
 const rp = require('request-promise');
 const puppeteer = require('puppeteer');
-const destiny = require('./destiny.js');
+const destiny = require('./destination.js');
 const departure = require('./departure.js');
 const passengers = require('./passengers.js');
 
@@ -24,7 +24,7 @@ const url = 'https://www.google.com/flights';
     await passengers.setupPassengers(page, 1, 0);
     
     // Fill up destiny
-    await destiny.fillOriginDestiny(page, 'Berlin', 'Navegantes');
+    await destiny.fillOriginDestination(page, 'Berlin', 'Navegantes');
     
     // Check departure prices
     let cheapestDeparture = await departure.scrapeDeparturePrices(page);
