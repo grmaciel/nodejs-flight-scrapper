@@ -6,7 +6,7 @@ const numberOfAdultPassengersSelector = '#flt-modaldialog > div > div > div:nth-
 
 // Apparently this can get flaky on first runs, even though checking the screenshots
 // the number of passengers are there
-async function setupPassenger(page, adults, children) {
+async function setupPassengers(page, adults, children) {
     if (adults == 1 && children == 0) return;
 
     console.log(`Settings passengers: adults: ${adults} children: ${children}`);
@@ -37,16 +37,15 @@ async function setupPassenger(page, adults, children) {
     }
 
     // we need to wait before clicking apparently
-    await clickAndWait(page, doneSelector)
     await page.waitFor(1000);
+    await clickAndWait(page, doneSelector)
 
     await page.screenshot({ path: 'screenshots/passengers_finished.png' });
-    
     // TODO: add support to infants
 }
 
 async function clickAndWait(page, selector) {
-    await page.waitFor(1500);
+    await page.waitFor(2000);
     await page.click(selector)
 }
 
@@ -57,5 +56,5 @@ async function fieldValue(page, selector) {
 }
 
 module.exports = {
-    setupPassenger: setupPassenger
+    setupPassengers: setupPassengers
 };
