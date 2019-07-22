@@ -16,13 +16,15 @@ async function scrapeDeparturePrices(page) {
 
 async function findCheapestPricesInOneYear(page) {
     var cheapestPrices = [];
-    await page.setRequestInterception(true)
+    await page.setRequestInterception(true);
+
 
     // we always have 2 visible months, so we just jump to the next two
     for (i = 0; i < 12; i += 2) {
         // all the months are available here but we still need to trigger the load of the prices
-        let price = await cheapestPriceInVisibleMonths(page, i, i + 1)
-        cheapestPrices.push(price)
+        let departure = await cheapestPriceInVisibleMonths(page, i, i + 1);
+        cheapestPrices.push(departure);
+
         // we need to move 2 months ahead
         await page.click(nextMonthBtnSelector)
         await page.click(nextMonthBtnSelector)
@@ -33,7 +35,20 @@ async function findCheapestPricesInOneYear(page) {
         }
     }
 
-    return cheapestPrices
+    let cheapestDeparture = cheapestPrices.reduce((previousDeparture, currentDeparture) =>
+        previousDeparture.price < currentDeparture.price ? previousDeparture : currentDeparture);
+
+    return cheapestPrices.filter(departure =>
+        isPriceInAcceptedVariation(cheapestDeparture.price, departure.price)
+    )
+}
+
+function isPriceInAcceptedVariation(cheapestPrice, currentPrice) {
+    // 10% margin on prices from the cheapest
+    let acceptedPriceVariation = .1;
+    let maxAcceptedPrice = cheapestPrice + cheapestPrice * acceptedPriceVariation
+
+    return currentPrice == cheapestPrice || currentPrice <= maxAcceptedPrice
 }
 
 async function cheapestPriceInVisibleMonths(page, firstMonthIndex, secondMonthIndex) {
