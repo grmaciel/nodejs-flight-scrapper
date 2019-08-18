@@ -27,7 +27,9 @@ async function findCheapestPricesInOneYear(page) {
 
         // we need to move 2 months ahead
         await page.click(nextMonthBtnSelector)
+        await page.waitFor(1000);
         await page.click(nextMonthBtnSelector)
+        await page.waitFor(1000);
         try {
             await waitForRequests.waitForRequests(page).catch(e => { });
         } catch (error) {
@@ -44,7 +46,7 @@ async function findCheapestPricesInOneYear(page) {
 }
 
 function isPriceInAcceptedVariation(cheapestPrice, currentPrice) {
-    // 10% margin on prices from the cheapest
+    // 10% margin on prices from the cheapest price we had to add some options
     let acceptedPriceVariation = .1;
     let maxAcceptedPrice = cheapestPrice + cheapestPrice * acceptedPriceVariation
 
@@ -55,6 +57,8 @@ async function cheapestPriceInVisibleMonths(page, firstMonthIndex, secondMonthIn
     return await page.evaluate((firstMonthIndex, secondMonthIndex) => {
         const months = document.getElementsByClassName('gws-travel-calendar__month gws-travel-calendar__show-annotations')
         const weekSelector = 'gws-travel-calendar__week';
+
+        console.log(`we got the months ${months}`)
 
         let firstMonthName = months[firstMonthIndex].children[0].innerText;
         let secondMonthName = months[secondMonthIndex].children[0].innerText;

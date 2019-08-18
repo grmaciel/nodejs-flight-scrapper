@@ -21,10 +21,10 @@ const url = 'https://www.google.com/flights';
     await page.screenshot({ path: 'screenshots/entry.png' });
     
     // Setting up passengers
-    await passengers.setupPassengers(page, 1, 0);
+    await passengers.setupPassengers(page, 2, 1);
     
     // Fill up destiny
-    await destiny.fillOriginDestination(page, 'Berlin', 'Navegantes');
+    await destiny.fillOriginDestination(page, 'Berlin', 'Ho Chi Minh');
     
     // Check departure prices
     let cheapestDeparture = await departure.scrapeDeparturePrices(page);
