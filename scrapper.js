@@ -16,8 +16,6 @@ class Scrapper {
     }
 
     async start() {
-        telegramHandler.start();
-
         const listOfEntries = db.getAllEntries();
 
         for (index in listOfEntries) {
@@ -26,7 +24,7 @@ class Scrapper {
 
             for (var index in listCheapestDeparture) {
                 console.log(listCheapestDeparture[index]);
-                telegramHandler.sendMessage(entry.chat_id)
+                telegramHandler.sendMessage(entry.chat_id, 'Test message after search')
             }
         }
     }
