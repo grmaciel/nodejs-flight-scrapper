@@ -8,7 +8,7 @@ const url = 'https://www.google.com/flights';
 
 (async () => {
     // use `headless` false to see what the browser is doing
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({ headless: true, args:['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
 
     // intercept logs in the browser context so we can see in the node server, when we use `evaluate()`
