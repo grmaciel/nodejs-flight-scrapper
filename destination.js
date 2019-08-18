@@ -13,8 +13,11 @@ async function fillOriginDestination(page, origin, destination) {
 // if i take a screenshot, i'm open to suggestions
 async function fillInputField(page, text, fieldSelector) {
     await page.tap(fieldSelector)
+    await page.waitFor(1000);
     await page.focus(fromToInputSelector)
+    await page.waitFor(1000);
     await page.keyboard.type(text)
+    await page.waitFor(1000);
     // await page.screenshot({ path: 'screenshots/input.png' });
     await page.keyboard.press('Tab');
 }
