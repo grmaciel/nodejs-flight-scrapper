@@ -33,6 +33,6 @@ const url = 'https://www.google.com/flights';
         console.log(`Date: ${element.date} price: ${element.price}`);
     });
     
-    debugger;
     browser.close();
+    process.exit();
 })();

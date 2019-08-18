@@ -9,7 +9,6 @@ async function scrapeDeparturePrices(page) {
 
     // funky waiting for the first prices to load, could use the wait for requests now
     await page.waitFor(3000);
-    debugger;
 
     return await findCheapestPricesInOneYear(page);
 }
@@ -90,7 +89,6 @@ async function cheapestPriceInVisibleMonths(page, firstMonthIndex, secondMonthIn
                      * can't guarantee this 100% with the current implementation
                      */
                     // console.log('price ' + price + ' for day ' + day.getAttribute('data-day'));
-                    debugger;
 
                     if (price < cheapestPrice) {
                         cheapestPrice = price;
