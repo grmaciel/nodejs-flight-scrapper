@@ -40,7 +40,7 @@ async function setupPassengers(page, adults, children) {
     await page.waitFor(1000);
     await clickAndWait(page, doneSelector)
 
-    await page.screenshot({ path: 'screenshots/passengers_finished.png' });
+    // await page.screenshot({ path: 'screenshots/passengers_finished.png' });
     // TODO: add support to infants
 }
 
