@@ -4,7 +4,8 @@
   "description": "A Google Flight Scrapper",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "node index.js"
   },
   "keywords": [
     "nodejs"
