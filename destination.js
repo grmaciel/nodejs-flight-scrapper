@@ -15,7 +15,7 @@ async function fillInputField(page, text, fieldSelector) {
     await page.tap(fieldSelector)
     await page.focus(fromToInputSelector)
     await page.keyboard.type(text)
-    await page.screenshot({ path: 'screenshots/input.png' });
+    // await page.screenshot({ path: 'screenshots/input.png' });
     await page.keyboard.press('Tab');
 }
 

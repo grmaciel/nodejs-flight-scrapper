@@ -18,7 +18,7 @@ const url = 'https://www.google.com/flights';
     
     await page.setViewport({ width: 1920, height: 926 });
     await page.goto(url);
-    await page.screenshot({ path: 'screenshots/entry.png' });
+    // await page.screenshot({ path: 'screenshots/entry.png' });
     
     // Setting up passengers
     await passengers.setupPassengers(page, 2, 1);
