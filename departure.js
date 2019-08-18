@@ -83,7 +83,7 @@ async function cheapestPriceInVisibleMonths(page, firstMonthIndex, secondMonthIn
                 if (priceAndDay[1]) {
                     // if the browser is not headless the date parsing is a bit different
                     // let price = Number(priceAndDay[1].replace(',', '.'))
-                    let price = Number(priceAndDay[1].split('€')[0].replace('.', ''))
+                    let price = Number(priceAndDay[1].replace(/[^\d+]/g, ''));
                     /**
                      * debug purpose to verify if we are really seeing the prices for the full month
                      * can't guarantee this 100% with the current implementation
