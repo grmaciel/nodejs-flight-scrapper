@@ -5,7 +5,7 @@ const Scrapper = require('./scrapper');
 var crontab = process.env.CRONTAB
 if (crontab == null) {
     // define default schedule to every 30 min
-    crontab = '* * * * *'
+    crontab = '*/30 * * * *'
 }
 
 schedule.scheduleJob(crontab, function() {
