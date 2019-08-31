@@ -3,12 +3,17 @@ const puppeteer = require('puppeteer');
 const destiny = require('./destination.js');
 const departure = require('./departure.js');
 const passengers = require('./passengers.js');
-const db = require('./db.js');
-const telegramHandler = require('./telegram_handler.js');
+// const db = require('./db.js');
+// const telegramHandler = require('./telegram_handler.js');
 
 const url = 'https://www.google.com/flights';
 
 // TODO on heroku app settings, add https://github.com/jontewks/puppeteer-heroku-buildpack before heroku/nodejs build packs
+
+if (process.env.NODE_ENV !== 'production') {
+    // Initializing local environment
+    require('dotenv').config();
+}
 
 class Scrapper {
     constructor(params) {
@@ -25,6 +30,7 @@ class Scrapper {
             for (var index in listCheapestDeparture) {
                 console.log(listCheapestDeparture[index]);
                 telegramHandler.sendMessage(entry.chat_id, 'Test message after search')
+                // todo: clean db after entry is sent?
             }
         }
     }
@@ -64,5 +70,9 @@ class Scrapper {
         return list;
     }
 }
+
+console.log('initializing db and telegram');
+// db.connect();
+// telegramHandler.start();
 
 module.exports = Scrapper;

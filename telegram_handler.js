@@ -3,8 +3,7 @@ const db = require('./db.js');
 
 class TelegramHandler {
 
-    constructor() {
-        // if (this.bot != null) return
+    start() {
         this.bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
         this.defineFindListener();
     }
@@ -50,15 +49,15 @@ class TelegramHandler {
                 const orderId = db.save(chatId, departure, destination, dateFrom, dateTo, minDays, maxDays);
 
                 const confirmationMessage = "Confirmed flight search:" +
-                "\nFrom " + departure + " to " + destination +
-                "\nBetween dates " + dateFrom + " to " + dateTo +
-                "\nBetween " + minDays + " to " + maxDays + " days" +
-                "\nIt will search on the next batch and send the results back to you." +
-                "\nTo cancel this search, send /cancel " + orderId;
+                    "\nFrom " + departure + " to " + destination +
+                    "\nBetween dates " + dateFrom + " to " + dateTo +
+                    "\nBetween " + minDays + " to " + maxDays + " days" +
+                    "\nIt will search on the next batch and send the results back to you." +
+                    "\nTo cancel this search, send /cancel " + orderId;
 
                 // send to the chat
                 this.bot.sendMessage(chatId, confirmationMessage);
-            } catch(err) {
+            } catch (err) {
                 console.log(err.message);
             }
         });
@@ -68,14 +67,18 @@ class TelegramHandler {
                 const chatId = msg.chat.id;
                 const requestData = match[1];
                 console.log("CANCEL -> chatId: " + chatId + ", data: " + requestData);
-            } catch(err) {
+            } catch (err) {
                 console.log(err.message);
             }
         });
     }
 
-    sendMessage(chatId, message) {
-        this.bot.sendMessage(chatId, message);
+    sendMessage(id, message) {
+        console.log('sending message to chat')
+        db.getChatIdById(id)
+            .then(result => {
+                this.bot.sendMessage(result.rows[0].chat_id, message)
+            }).then(db.deleteById(id))
     }
 }
 
