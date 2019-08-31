@@ -71,8 +71,4 @@ class Scrapper {
     }
 }
 
-console.log('initializing db and telegram');
-// db.connect();
-// telegramHandler.start();
-
 module.exports = Scrapper;
