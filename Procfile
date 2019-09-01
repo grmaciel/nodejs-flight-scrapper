@@ -1,2 +1,2 @@
-worker: node worker.js
+telegram: node telegram.js
 clock: node clock.js
