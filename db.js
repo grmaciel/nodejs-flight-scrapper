@@ -1,16 +1,34 @@
 const { Client } = require('pg');
 
 class DB {
-    constructor() {
+    connect() {
         this.client = new Client({
             connectionString: process.env.DATABASE_URL
         });
         this.client.connect();
+        this.createDB();
+    }
+
+    createDB() {
+        // TODO move this crap away from here
+        this.client.query(`CREATE TABLE IF NOT EXISTS 
+        flight_search(
+            id SERIAL PRIMARY KEY, 
+            chat_id VARCHAR(60) not null, 
+            departure VARCHAR(60) not null, 
+            destination VARCHAR(60) not null, 
+            dateFrom VARCHAR(60) not null, 
+            dateTo VARCHAR(60) not null, 
+            minDays VARCHAR(60) not null,
+            maxDays VARCHAR(60) not null
+            );`
+        )
     }
 
     save(chatId, departure, destination, dateFrom, dateTo, minDays, maxDays) {
         try {
-            const command = "INSERT INTO flight_search VALUES(nextval('flight_search_seq'), $1, $2, $3, $4, $5, $6, $7) RETURNING id";
+            // TODO IDENTIFY WHAT ARE THESE
+            const command = "INSERT INTO flight_search VALUES(nextval('flight_search_id_seq'), $1, $2, $3, $4, $5, $6, $7) RETURNING id";
             const values = [chatId, departure, destination, dateFrom, dateTo, minDays, maxDays];
 
             let res = this.client.query(command, values);
@@ -19,16 +37,30 @@ class DB {
             // console.log("res.rows " + res.rows);
             // console.log(res.rows[0]);
             return res.id;
-        } catch(err) {
+        } catch (err) {
             console.log(err.message);
             return -1;
         }
     }
 
-    async getAllEntries() {
+    getAllEntries() {
         // TODO put it in a transation
-        console.log("TO BE IMPLEMENTED");
-        return []
+        const query = "SELECT * FROM FLIGHT_SEARCH";
+        return this.client.query(query);
+    }
+
+    getChatIdById(id) {
+        console.log('querying for id', id)
+        const query = "SELECT chat_id FROM FLIGHT_SEARCH WHERE ID = $1";
+        let result = this.client.query(query, [id]);
+
+        return result;
+    }
+
+    deleteById(id) {
+        console.log('querying for id', id)
+        const query = "DELETE FROM FLIGHT_SEARCH WHERE ID = $1";
+        this.client.query(query, [id]);
     }
 }
 

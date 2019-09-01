@@ -8,7 +8,7 @@ if (crontab == null) {
     crontab = '*/30 * * * *'
 }
 
-schedule.scheduleJob(crontab, function(){
+schedule.scheduleJob(crontab, function() {
     console.log('Scrapper running ', Date().toString());
 
     const scrapper = new Scrapper();
