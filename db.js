@@ -6,6 +6,7 @@ class DB {
             connectionString: process.env.DATABASE_URL
         });
         this.client.connect();
+        this.createDB();
     }
 
     createDB() {

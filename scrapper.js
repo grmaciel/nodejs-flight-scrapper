@@ -20,13 +20,27 @@ const searchServerUrl = `${process.env.SEARCH_REQUEST_HOST}:${process.env.SEARCH
 class Scrapper {
     async start() {
         this.retrievePendingSearchRequests((result) => {
-            result.forEach(search => {
-                console.log('executing search ', search)
-                this.getCheapestDeparture(search)
-                    .then(results => this.sendSearchResults(search.id, results))
+            this.retriveDepartures(result);
 
-            })
+            // result.forEach(search => {
+            //     this.getCheapestDeparture(search)
+            //         .then(results => {
+            //             let resultText = `${search.departure} -> ${search.destination} - Results: ${results.join()}`
+            //             this.sendSearchResults(search.id, resultText)
+            //         })
+            // })
         })
+    }
+
+    // Running one query at a time for now
+    async retriveDepartures(results) {
+        for (var i = 0; i < results.length; i++) {
+            let search = results[i];
+            console.log('Querying info for ', search);
+            let result = await this.getCheapestDeparture(search);
+            let resultText = `${search.departure} -> ${search.destination} - Results: ${result.join()}`
+            this.sendSearchResults(search.id, resultText)
+        }
     }
 
     async getCheapestDeparture(entry) {
@@ -40,7 +54,7 @@ class Scrapper {
         });
 
         await page.setViewport({ width: 1920, height: 926 });
-        await page.goto(url);
+        await page.goto(url, { timeout: 0 });
         await page.screenshot({ path: 'entry.png' });
 
         // Setting up passengers
@@ -76,7 +90,7 @@ class Scrapper {
         request.post(`${searchServerUrl}/send-result`, {
             json: {
                 'id': id,
-                'result': results.join()
+                'result': results
             }
         }, (err, res, body) => {
             console.log('err ', err)
@@ -86,5 +100,4 @@ class Scrapper {
     }
 }
 
-new Scrapper().start();
 module.exports = Scrapper;

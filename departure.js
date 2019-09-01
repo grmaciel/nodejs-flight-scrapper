@@ -66,7 +66,6 @@ async function cheapestPriceInVisibleMonths(page, firstMonthIndex, secondMonthIn
 
         if (!firstMonthHtmlElement || !secondMonthHtmlElement) {
             return;
-
         }
 
         let firstMonthName = firstMonthHtmlElement.children[0].innerText;
