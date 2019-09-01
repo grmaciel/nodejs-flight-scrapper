@@ -3,10 +3,10 @@ const puppeteer = require('puppeteer');
 const destiny = require('./destination.js');
 const departure = require('./departure.js');
 const passengers = require('./passengers.js');
-// const db = require('./db.js');
-// const telegramHandler = require('./telegram_handler.js');
+const request = require('request');
 
 const url = 'https://www.google.com/flights';
+
 
 // TODO on heroku app settings, add https://github.com/jontewks/puppeteer-heroku-buildpack before heroku/nodejs build packs
 
@@ -15,24 +15,18 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 
+const searchServerUrl = `${process.env.SEARCH_REQUEST_HOST}:${process.env.SEARCH_REQUEST_PORT}`;
+
 class Scrapper {
-    constructor(params) {
-        this.params = params;
-    }
-
     async start() {
-        const listOfEntries = db.getAllEntries();
+        this.retrievePendingSearchRequests((result) => {
+            result.forEach(search => {
+                console.log('executing search ', search)
+                this.getCheapestDeparture(search)
+                    .then(results => this.sendSearchResults(search.id, results))
 
-        for (index in listOfEntries) {
-            const entry = listOfEntries[index];
-            let listCheapestDeparture = await getCheapestDeparture(entry);
-
-            for (var index in listCheapestDeparture) {
-                console.log(listCheapestDeparture[index]);
-                telegramHandler.sendMessage(entry.chat_id, 'Test message after search')
-                // todo: clean db after entry is sent?
-            }
-        }
+            })
+        })
     }
 
     async getCheapestDeparture(entry) {
@@ -53,7 +47,7 @@ class Scrapper {
         await passengers.setupPassengers(page, 2, 1);
 
         // Fill up destiny
-        await destiny.fillOriginDestination(page, 'Berlin', 'Ho Chi Minh');
+        await destiny.fillOriginDestination(page, entry.departure, entry.destination);
 
         // Check departure prices
         let cheapestDeparture = await departure.scrapeDeparturePrices(page);
@@ -69,6 +63,28 @@ class Scrapper {
 
         return list;
     }
+
+    retrievePendingSearchRequests(resultCallback) {
+        request(`${searchServerUrl}/search`, (err, res, body) => {
+            let searchItems = JSON.parse(body)
+
+            resultCallback(searchItems)
+        })
+    }
+
+    sendSearchResults(id, results) {
+        request.post(`${searchServerUrl}/send-result`, {
+            json: {
+                'id': id,
+                'result': results.join()
+            }
+        }, (err, res, body) => {
+            console.log('err ', err)
+            console.log('response code', res.statusCode)
+        })
+        console.log('Sending Search results ' + results)
+    }
 }
 
+new Scrapper().start();
 module.exports = Scrapper;

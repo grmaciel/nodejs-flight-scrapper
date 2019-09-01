@@ -12,7 +12,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 
-var port = process.env.PORT || 3000;
+var port = process.env.SEARCH_REQUEST_PORT || 3000;
 // Setting up body parser before the routes
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json())
