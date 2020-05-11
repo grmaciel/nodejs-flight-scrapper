@@ -22,7 +22,10 @@ async function findCheapestPricesInOneYear(page) {
     for (i = 0; i < 12; i += 2) {
         // all the months are available here but we still need to trigger the load of the prices
         let departure = await cheapestPriceInVisibleMonths(page, i, i + 1);
-        cheapestPrices.push(departure);
+
+        if (departure) {
+            cheapestPrices.push(departure);
+        }
 
         // we need to move 2 months ahead
         await page.click(nextMonthBtnSelector)
@@ -53,14 +56,20 @@ function isPriceInAcceptedVariation(cheapestPrice, currentPrice) {
 }
 
 async function cheapestPriceInVisibleMonths(page, firstMonthIndex, secondMonthIndex) {
+    console.log('checking cheapest price')
     return await page.evaluate((firstMonthIndex, secondMonthIndex) => {
         const months = document.getElementsByClassName('gws-travel-calendar__month gws-travel-calendar__show-annotations')
         const weekSelector = 'gws-travel-calendar__week';
 
-        console.log(`we got the months ${months}`)
+        let firstMonthHtmlElement = months[firstMonthIndex];
+        let secondMonthHtmlElement = months[secondMonthIndex];
 
-        let firstMonthName = months[firstMonthIndex].children[0].innerText;
-        let secondMonthName = months[secondMonthIndex].children[0].innerText;
+        if (!firstMonthHtmlElement || !secondMonthHtmlElement) {
+            return;
+        }
+
+        let firstMonthName = firstMonthHtmlElement.children[0].innerText;
+        let secondMonthName = secondMonthHtmlElement.children[0].innerText;
         console.log(`Checking departure for months: ${firstMonthName} and ${secondMonthName}`)
 
         let firstMonth = Array.prototype.slice.apply(months[firstMonthIndex].getElementsByClassName(weekSelector))
@@ -83,7 +92,7 @@ async function cheapestPriceInVisibleMonths(page, firstMonthIndex, secondMonthIn
                 if (priceAndDay[1]) {
                     // if the browser is not headless the date parsing is a bit different
                     // let price = Number(priceAndDay[1].replace(',', '.'))
-                    let price = Number(priceAndDay[1].split('€')[0].replace('.', ''))
+                    let price = Number(priceAndDay[1].replace(/[^\d+]/g, ''));
                     /**
                      * debug purpose to verify if we are really seeing the prices for the full month
                      * can't guarantee this 100% with the current implementation
